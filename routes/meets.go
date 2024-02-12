@@ -35,6 +35,7 @@ func getMeeting(context *gin.Context){
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
 	//redirection logic will come here till then returning link
-	context.JSON(http.StatusOK, gin.H{"url":meet.Url})
+	context.Redirect(http.StatusMovedPermanently, meet.Url)
+	//context.JSON(http.StatusOK, gin.H{"url":meet.Url})
 }
 
