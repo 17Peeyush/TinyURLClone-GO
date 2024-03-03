@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Box Example</title>
+    <style>
+        /* Add CSS styles for input box and container */
+        .input-container {
+            width: 300px;
+            margin: 20px auto;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="input-container">
+        <!-- Input box -->
+        <input type="text" id="textInput" placeholder="Enter text here">
+        <!-- Button to trigger fetch -->
+        <button id="fetchButton">Shorten Url</button>
+        <p id="shortenedURL"></p>
+    </div>
+
+    <script>
+        // Get references to the input box and fetch button
+        const inputBox = document.getElementById('textInput');
+        const fetchButton = document.getElementById('fetchButton');
+
+        // Add event listener for button click
+        fetchButton.addEventListener('click', () => {
+            // Get the value from the input box
+            const inputValue = inputBox.value;
+
+            // Make sure the input value is not empty
+            if (inputValue.trim() !== '') {
+                // Use Fetch API to make a request (replace URL with your endpoint)
+                fetch('http://localhost:8080/shortener', {
+                    method: 'POST', // Example: Change method as per your requirement
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url: inputValue })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response data
+                    console.log(data);
+                    document.getElementById("shortenedURL").innerHTML = "Your shortenedUrl :"+data.uniqueID;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+            } else {
+                alert('Please enter some text before fetching data.');
+            }
+        });
+    </script>
+</body>
+</html>
