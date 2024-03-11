@@ -50,28 +50,34 @@
         fetchButton.addEventListener('click', () => {
             // Get the value from the input box
             const inputValue = inputBox.value;
-
-            // Make sure the input value is not empty
-            if (inputValue.trim() !== '') {
-                // Use Fetch API to make a request (replace URL with your endpoint)
-                fetch('http://localhost:8080/shortener', {
-                    method: 'POST', // Example: Change method as per your requirement
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ url: inputValue })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Handle the response data
-                    console.log(data);
-                    document.getElementById("shortenedURL").innerHTML = "Your shortenedUrl :"+data.uniqueID;
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                });
-            } else {
-                alert('Please enter some text before fetching data.');
+            if (document.getElementById("fetchButton").innerHTML === "Shorten another") {
+                // If response is received, redirect to a new URL
+                window.location.href = "http://localhost:8080/"; 
+            }
+            else{
+                    // Make sure the input value is not empty
+                if (inputValue.trim() !== '') {
+                    // Use Fetch API to make a request (replace URL with your endpoint)
+                    fetch('http://localhost:8080/shortener', {
+                        method: 'POST', // Example: Change method as per your requirement
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ url: inputValue })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle the response data
+                        console.log(data);
+                        document.getElementById("shortenedURL").innerHTML = "Your shortenedUrl :"+data.uniqueID;
+                        document.getElementById("fetchButton").innerHTML = "Shorten another";
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
+                } else {
+                    alert('Please enter some text before fetching data.');
+                }
             }
         });
     </script>
